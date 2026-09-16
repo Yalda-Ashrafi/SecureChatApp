@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block title %}Chat · SecureChat{% endblock %}
+{% block body_class %}chat-page{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div>
+        <span class="auth-kicker"><span class="pulse-dot" aria-hidden="true"></span>Encrypted workspace</span>
+        <h1>Send a protected message.</h1>
+        <p class="muted">Choose an algorithm, bring a key, and keep it private.</p>
+    </div>
+    <div class="workspace-status"><span class="status-dot" aria-hidden="true"></span><span><strong>Session active</strong><small>{{ session.get('username', 'User') }}</small></span></div>
+</section>
+<section class="chat-layout">
+    <form method="POST" class="card compose-card" id="encrypt-form" data-loading-form>
+        <div class="card-title-row">
+            <div>
+                <p class="eyebrow">COMPOSE</p>
+                <h2>Encrypt a message</h2>
+            </div>
+            <span class="step-label">01 / 03</span>
+        </div>
+        <div class="field">
+            <label for="receiver">Recipient <span class="optional">Optional</span></label>
+            <input id="receiver" type="text" name="receiver" placeholder="username" maxlength="30" autocomplete="off">
+        </div>
+        <div class="field">
+            <label for="plaintext">Message</label>
+            <textarea id="plaintext" name="plaintext" placeholder="Write a message to encrypt..." required maxlength="10000"></textarea>
+            <p class="field-hint">Your plaintext is processed for this demonstration.</p>
+        </div>
+        <div class="field">
+            <label for="algorithm">Algorithm</label>
+            <select name="algorithm" id="algorithm" aria-describedby="key-help">
+                <option value="vigenere">Vigenere (letters)</option>
+                <option value="vernam">Vernam (UTF-8 bytes)</option>
+                <option value="otp">One-time pad (UTF-8 bytes)</option>
+            </select>
+        </div>
+        <div class="field">
+            <label for="key">Key</label>
+            <div class="input-with-action">
+                <input type="password" name="key" id="key" placeholder="Example: LEMON" required autocomplete="off" spellcheck="false">
+                <button class="input-action" type="button" data-password-toggle data-target="key" aria-label="Show key">
+                    <svg class="eye-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path><circle cx="12" cy="12" r="2.5"></circle></svg>
+                </button>
+            </div>
+            <p class="field-hint" id="key-help">Use ASCII letters only. Spaces and punctuation are preserved. Example key: LEMON.</p>
+        </div>
+        <button class="button button-primary" type="submit" data-loading-label="Encrypting...">Encrypt and save <span class="button-arrow" aria-hidden="true">-&gt;</span></button>
+    </form>
+    <form method="POST" class="card compose-card decrypt-chat-card" data-loading-form>
+        <div class="card-title-row">
+            <div>
+                <p class="eyebrow">RECEIVE</p>
+                <h2>Decrypt a message</h2>
+            </div>
+            <span class="step-label">02 / 03</span>
+        </div>
+        <p class="field-hint decrypt-intro">Paste the ciphertext and the private key shared by the sender.</p>
+        <input type="hidden" name="action" value="decrypt">
+        <div class="field">
+            <label for="decrypt_algorithm">Algorithm</label>
+            <select name="decrypt_algorithm" id="decrypt_algorithm">
+                <option value="vigenere" {% if decrypt_algorithm == 'vigenere' %}selected{% endif %}>Vigenere (letters)</option>
+                <option value="vernam" {% if decrypt_algorithm == 'vernam' %}selected{% endif %}>Vernam (Base64 bytes)</option>
+                <option value="otp" {% if decrypt_algorithm == 'otp' %}selected{% endif %}>One-time pad (Base64 bytes)</option>
+            </select>
+        </div>
+        <div class="field">
+            <label for="decrypt_ciphertext">Ciphertext</label>
+            <textarea id="decrypt_ciphertext" name="decrypt_ciphertext" placeholder="Paste ciphertext from the sender..." required>{{ decrypt_ciphertext }}</textarea>
+        </div>
+        <div class="field">
+            <label for="decrypt_key">Key</label>
+            <div class="input-with-action">
+                <input type="password" name="decrypt_key" id="decrypt_key" placeholder="Enter the shared key" required autocomplete="off" spellcheck="false">
+                <button class="input-action" type="button" data-password-toggle data-target="decrypt_key" aria-label="Show decryption key">
+                    <svg class="eye-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path><circle cx="12" cy="12" r="2.5"></circle></svg>
+                </button>
+            </div>
+        </div>
+        <button class="button button-secondary" type="submit" data-loading-label="Decrypting...">Decrypt message <span class="button-arrow" aria-hidden="true">-&gt;</span></button>
+        {% if decrypted_text is not none %}
+        <div class="decrypted-result" role="status">
+            <p class="eyebrow">DECRYPTED MESSAGE</p>
+            <output>{{ decrypted_text }}</output>
+        </div>
+        {% endif %}
+    </form>
+    <section class="card result-panel" aria-labelledby="messages-title">
+        {% if ciphertext %}
+        <div class="result-callout">
+            <div class="card-title-row">
+                <div>
+                    <p class="eyebrow">LATEST CIPHERTEXT</p>
+                    <h2>Ready to transport</h2>
+                </div>
+                <span class="result-type">{{ ciphertext_type }}</span>
+            </div>
+            <output class="ciphertext" id="ciphertext-output">{{ ciphertext }}</output>
+            <div class="result-actions">
+                <button class="button button-secondary" type="button" data-copy-target="ciphertext-output">Copy ciphertext</button>
+                <span class="copy-status" aria-live="polite"></span>
+            </div>
+            <p class="field-hint">This demo stores ciphertext only. Keep your key private.</p>
+        </div>
+        {% else %}
+        <div class="empty-result">
+            <span class="empty-icon" aria-hidden="true">+</span>
+            <p class="eyebrow">YOUR RESULT</p>
+            <h2>Your ciphertext will appear here.</h2>
+            <p class="muted">Fill in the message and key, then encrypt to see the transport-safe output.</p>
+        </div>
+        {% endif %}
+        <div class="recent-heading">
+            <div>
+                <p class="eyebrow">HISTORY</p>
+                <h2 id="messages-title">Recent messages</h2>
+            </div>
+            <span class="count-pill">{{ messages|length }}</span>
+        </div>
+        {% if messages %}
+        <ul class="message-list">
+        {% for message in messages %}
+            <li>
+                <div class="message-meta"><span>{{ message.sender }} <span aria-hidden="true">-&gt;</span> {{ message.receiver }}</span><small>{{ message.timestamp.strftime('%Y-%m-%d %H:%M') }}</small></div>
+                <div class="message-detail"><span class="algorithm-tag">{{ message.algorithm }}</span><code>{{ message.ciphertext }}</code></div>
+            </li>
+        {% endfor %}
+        </ul>
+        {% else %}<p class="muted empty-history">No messages yet. Your encrypted history will appear here.</p>{% endif %}
+    </section>
+</section>
+{% endblock %}

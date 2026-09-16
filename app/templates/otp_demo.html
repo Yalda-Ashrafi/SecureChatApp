@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}OTP demo · SecureChat{% endblock %}
+{% block body_class %}demo-page{% endblock %}
+{% block content %}
+<section class="page-heading demo-heading">
+    <div>
+        <span class="auth-kicker"><span class="pulse-dot" aria-hidden="true"></span>Interactive demonstration</span>
+        <h1>One-time pad, made visible.</h1>
+        <p class="muted">See how a fresh random key changes a message into transport-safe ciphertext.</p>
+    </div>
+    <div class="security-note"><span class="shield-icon" aria-hidden="true">S</span><span><strong>Fresh key every time</strong><small>Never reuse a one-time pad key.</small></span></div>
+</section>
+<section class="demo-layout">
+    <form method="POST" class="card compose-card" data-loading-form>
+        <div class="card-title-row">
+            <div>
+                <p class="eyebrow">STEP 01</p>
+                <h2>Enter a message</h2>
+            </div>
+            <span class="step-label">OTP</span>
+        </div>
+        <div class="field">
+            <label for="plaintext">Message</label>
+            <textarea id="plaintext" name="plaintext" placeholder="Type something to encrypt..." required maxlength="10000" autofocus></textarea>
+            <p class="field-hint">A cryptographically random key is generated from the message length.</p>
+        </div>
+        <input type="hidden" name="action" value="encrypt">
+        <button class="button button-primary" type="submit" data-loading-label="Generating key...">Generate key and encrypt <span class="button-arrow" aria-hidden="true">-&gt;</span></button>
+    </form>
+    <section class="card demo-output-card" aria-labelledby="otp-result-title">
+        {% if result %}
+        <div class="card-title-row">
+            <div>
+                <p class="eyebrow">STEP 02</p>
+                <h2 id="otp-result-title">Your output</h2>
+            </div>
+            <span class="result-type">Base64</span>
+        </div>
+        <div class="output-field">
+            <div class="output-label"><label for="otp-plaintext">Original message</label></div>
+            <textarea id="otp-plaintext" readonly>{{ result.plaintext }}</textarea>
+        </div>
+        <div class="output-field">
+            <div class="output-label"><label for="otp-key">Key <span>({{ result.length }} bytes)</span></label><button class="text-button" type="button" data-copy-target="otp-key">Copy</button></div>
+            <textarea id="otp-key" readonly>{{ result.key }}</textarea>
+        </div>
+        <div class="output-field">
+            <div class="output-label"><label for="otp-ciphertext">Ciphertext</label><button class="text-button" type="button" data-copy-target="otp-ciphertext">Copy</button></div>
+            <textarea id="otp-ciphertext" readonly>{{ result.ciphertext }}</textarea>
+        </div>
+        <p class="field-hint output-warning"><span aria-hidden="true">!</span> The key is shown once in this response. Store it securely for decryption exercises.</p>
+        <span class="copy-status" aria-live="polite"></span>
+        {% else %}
+        <div class="empty-result">
+            <span class="empty-icon" aria-hidden="true">+</span>
+            <p class="eyebrow">STEP 02</p>
+            <h2 id="otp-result-title">Output appears here.</h2>
+            <p class="muted">Your Base64 key and ciphertext will be displayed after you generate them.</p>
+        </div>
+        {% endif %}
+    </section>
+</section>
+<section class="card decrypt-card" aria-labelledby="decrypt-title">
+    <div class="card-title-row">
+        <div>
+            <p class="eyebrow">OPTIONAL STEP 03</p>
+            <h2 id="decrypt-title">Decrypt an OTP result</h2>
+        </div>
+        <span class="result-type">Base64 input</span>
+    </div>
+    <p class="muted">Paste the key and ciphertext from the same encryption response to recover the original message.</p>
+    <form method="POST" class="form-grid" data-loading-form>
+        <input type="hidden" name="action" value="decrypt">
+        <input type="hidden" name="original_plaintext" value="{{ result.plaintext if result else '' }}">
+        <div class="field">
+            <div class="output-label"><label for="decrypt-key">Base64 key</label><button class="text-button" type="button" data-copy-target="otp-key">Copy from result</button></div>
+            <textarea id="decrypt-key" name="decrypt_key" placeholder="Example: sD6jUuDjBjU=" required spellcheck="false"></textarea>
+        </div>
+        <div class="field">
+            <div class="output-label"><label for="decrypt-ciphertext">Base64 ciphertext</label><button class="text-button" type="button" data-copy-target="otp-ciphertext">Copy from result</button></div>
+            <textarea id="decrypt-ciphertext" name="decrypt_ciphertext" placeholder="Paste the Base64 ciphertext here" required spellcheck="false"></textarea>
+        </div>
+        <button class="button button-secondary" type="submit" data-loading-label="Decrypting...">Decrypt message <span class="button-arrow" aria-hidden="true">-&gt;</span></button>
+    </form>
+    {% if decrypted_text is not none %}
+    <div class="decrypted-result" role="status">
+        <p class="eyebrow">DECRYPTED MESSAGE</p>
+        <output>{{ decrypted_text }}</output>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

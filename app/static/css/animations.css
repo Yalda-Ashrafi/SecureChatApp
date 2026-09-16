@@ -1,0 +1,16 @@
+.card, .auth-intro, .page-heading { animation: rise-in .45s ease-out both; }
+.auth-intro { animation-delay: .04s; }
+.card { animation-delay: .1s; }
+@keyframes rise-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.alert { animation: toast-in .25s ease-out both; }
+@keyframes toast-in {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.is-dismissing { animation: toast-out .2s ease-in forwards; }
+@keyframes toast-out {
+    to { opacity: 0; transform: translateX(10px); }
+}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Log in · SecureChat{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+{% block content %}
+<section class="auth-shell" aria-labelledby="login-title">
+    <div class="auth-intro">
+        <span class="auth-kicker"><span class="pulse-dot" aria-hidden="true"></span>Private workspace</span>
+        <h1>Keep your<br><em>messages private.</em></h1>
+        <p>Explore classical encryption in a focused, secure-by-design workspace.</p>
+        <div class="trust-list">
+            <div><span class="trust-icon" aria-hidden="true">01</span><span><strong>Built for learning</strong><small>Understand what encryption does.</small></span></div>
+            <div><span class="trust-icon" aria-hidden="true">02</span><span><strong>Keys stay yours</strong><small>Bring a key for every message.</small></span></div>
+        </div>
+    </div>
+    <div class="card auth-card">
+        <div class="card-heading">
+            <span class="icon-badge" aria-hidden="true">S</span>
+            <div>
+                <p class="eyebrow">WELCOME BACK</p>
+                <h2 id="login-title">Log in to SecureChat</h2>
+            </div>
+        </div>
+        <p class="muted">Use your account to open your encrypted workspace.</p>
+        <form method="POST" class="form-grid" data-loading-form>
+            <div class="field">
+                <label for="username">Username</label>
+                <input id="username" type="text" name="username" autocomplete="username" required maxlength="30" autofocus>
+            </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <div class="input-with-action">
+                    <input id="password" type="password" name="password" autocomplete="current-password" required>
+                    <button class="input-action" type="button" data-password-toggle data-target="password" aria-label="Show password">
+                        <svg class="eye-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path><circle cx="12" cy="12" r="2.5"></circle></svg>
+                    </button>
+                </div>
+            </div>
+            <button class="button button-primary" type="submit" data-loading-label="Signing in...">Log in <span class="button-arrow" aria-hidden="true">-&gt;</span></button>
+        </form>
+        <p class="form-footer muted">New to SecureChat? <a href="{{ url_for('routes.register') }}">Create an account</a></p>
+    </div>
+</section>
+{% endblock %}

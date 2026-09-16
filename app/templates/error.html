@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Error · SecureChat{% endblock %}
+{% block content %}
+<section class="card error-card" aria-labelledby="error-title">
+    <span class="error-code" aria-hidden="true">!</span>
+    <p class="eyebrow">REQUEST INTERRUPTED</p>
+    <h1 id="error-title">{{ message or "Something went wrong" }}</h1>
+    <p class="muted">The workspace is still safe. Try returning to the start and continue from there.</p>
+    <a class="button button-primary" href="{{ url_for('routes.index') }}">Back to home <span class="button-arrow" aria-hidden="true">-&gt;</span></a>
+</section>
+{% endblock %}

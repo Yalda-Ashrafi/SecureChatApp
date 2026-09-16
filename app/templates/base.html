@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#07111f">
+    <title>{% block title %}SecureChat{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="brand" href="{{ url_for('routes.index') }}" aria-label="SecureChat home">
+                <img class="brand-logo" src="{{ url_for('static', filename='images/Logo.png') }}" alt="">
+                <span>Secure<span class="brand-accent">Chat</span></span>
+            </a>
+            <div class="header-actions">
+                <a class="security-status security-status-link" href="{{ url_for('routes.otp_demo') }}" title="Try the OTP encryption and decryption demonstration">
+                    <span class="status-dot" aria-hidden="true"></span>Security demo
+                </a>
+                <nav aria-label="Primary navigation">
+                    {% if session.get('user_id') %}
+                    <a href="{{ url_for('routes.chat') }}">Chat</a>
+                    {% endif %}
+                    <a href="{{ url_for('routes.otp_demo') }}">OTP demo</a>
+                    {% if session.get('user_id') %}
+                    <a class="nav-button" href="{{ url_for('routes.logout') }}">Log out</a>
+                    {% else %}
+                    <a class="nav-button" href="{{ url_for('routes.login') }}">Log in</a>
+                    {% endif %}
+                </nav>
+            </div>
+        </div>
+    </header>
+    <main class="container" id="main-content">
+        {% with notices = get_flashed_messages(with_categories=true) %}
+        {% if notices %}
+        <section class="alerts" aria-label="Notifications" aria-live="polite">
+            {% for category, message in notices %}
+            <div class="alert {{ category }}" role="{{ 'alert' if category in ['error', 'warning'] else 'status' }}" data-toast>
+                <span>{{ message }}</span>
+                <button class="alert-dismiss" type="button" aria-label="Dismiss notification">&times;</button>
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <span class="footer-mark" aria-hidden="true">+</span>
+        <span>Yalda Ashrafi</span>
+        <span class="footer-separator" aria-hidden="true">/</span>
+        <span>&copy; 2026 Cryptography Project</span>
+        <span class="footer-separator" aria-hidden="true">/</span>
+        <span>Never reuse a one-time pad key.</span>
+    </footer>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
