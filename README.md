@@ -2,14 +2,10 @@
 
 # 🔐 SecureChatApp — Classical Cryptography Educational Messenger
 
-[`https://www.python.org/`](https://www.python.org/)  
-[`https://flask.palletsprojects.com/`](https://flask.palletsprojects.com/)  
-`[Looks like the result wasn't safe to show. Let's switch things up and try something else!]`
-
 SecureChatApp is a small **Flask educational application** demonstrating:  
-- ✅ User authentication  
-- ✅ Encrypted-message workflows  
-- ✅ Three classical cryptographic algorithms (Vigenère, Vernam, OTP)  
+-  User authentication  
+-  Encrypted-message workflows  
+-  Three classical cryptographic algorithms (Vigenère, Vernam, OTP)  
 
 ⚠️ This project is **not** a replacement for modern end-to-end encrypted messengers. It is designed for **learning and demonstration purposes**.
 
@@ -21,7 +17,19 @@ SecureChatApp is a small **Flask educational application** demonstrating:
 - Clear error handling for invalid/malformed keys  
 - Sender/receiver classroom workflow simulation  
 - Algorithms implemented with strict validation rules  
-- Database-backed message storage (`SQLite`)  
+- Database-backed message storage (`SQLite`)
+
+  ![Model Results](https://github.com/Yalda-Ashrafi/SecureChatApp/blob/f77533be3e8c73cabe283194340751867b10bea4/Screenshot%202026-09-17%20044621.png)
+  ![Model Results](https://github.com/Yalda-Ashrafi/SecureChatApp/blob/f77533be3e8c73cabe283194340751867b10bea4/Screenshot%202026-09-17%20023114.png
+)
+  ![Model Results](https://github.com/Yalda-Ashrafi/SecureChatApp/blob/f77533be3e8c73cabe283194340751867b10bea4/Screenshot%202026-09-17%20011550.png
+)
+
+ ![Model Results](https://github.com/Yalda-Ashrafi/SecureChatApp/blob/f77533be3e8c73cabe283194340751867b10bea4/Screenshot%202026-09-17%20011006.png
+)
+
+ ![Model Results](https://github.com/Yalda-Ashrafi/SecureChatApp/blob/f77533be3e8c73cabe283194340751867b10bea4/Screenshot%202026-09-17%20010427.png)
+  
 
 ---
 
@@ -67,6 +75,8 @@ Open [http://127.0.0.1:5000](http://127.0.0.1:5000), register an account, and lo
 
 ---
 
+
+
 ##  Sender & Receiver Workflow
 
 The authenticated chat page supports both sides of the classroom workflow:
@@ -78,6 +88,7 @@ The authenticated chat page supports both sides of the classroom workflow:
 🔒 Keys are **never stored**. Sender and receiver must share keys through a separate secure channel.
 
 ---
+Visit the Live Web App: https://securechatapp-oopk.onrender.com/otp
 
 ##  Security Notes
 
@@ -110,10 +121,10 @@ Unit tests cover encryption/decryption correctness, key validation, and error ha
 ##  References
 
 This project is informed by academic research, including:  
-- Anzari et al. (2026) — Security and performance analysis of Caesar & Vigenère  
-- Damanik et al. (2025) — Modified Vigenère in web applications  
-- Davlatov et al. (2025) — Neural networks in Vigenère cryptanalysis  
-- Deng et al. (2026) — OTP transmission schemes  
-- Kutsman (2025) — Vernam cipher applications  
-- Wati & Hasan (2025) — Neural cryptography for OTP generation  
+- Anzari et al. (2026): Security and performance analysis of Caesar & Vigenère  
+- Damanik et al. (2025): Modified Vigenère in web applications  
+- Davlatov et al. (2025): Neural networks in Vigenère cryptanalysis  
+- Deng et al. (2026): OTP transmission schemes  
+- Kutsman (2025): Vernam cipher applications  
+- Wati & Hasan (2025):  Neural cryptography for OTP generation  
 
