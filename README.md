@@ -25,8 +25,6 @@ SecureChatApp is a small **Flask educational application** demonstrating:
   ![Model Results](https://github.com/Yalda-Ashrafi/SecureChatApp/blob/f77533be3e8c73cabe283194340751867b10bea4/Screenshot%202026-09-17%20011550.png
 )
 
- ![Model Results](https://github.com/Yalda-Ashrafi/SecureChatApp/blob/f77533be3e8c73cabe283194340751867b10bea4/Screenshot%202026-09-17%20011006.png
-)
 
  ![Model Results](https://github.com/Yalda-Ashrafi/SecureChatApp/blob/f77533be3e8c73cabe283194340751867b10bea4/Screenshot%202026-09-17%20010427.png)
   
