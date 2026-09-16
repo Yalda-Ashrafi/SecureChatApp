@@ -108,17 +108,17 @@ Visit the Live Web App: https://securechatapp-oopk.onrender.com/otp
 
 SecureChatApp includes automated unit tests to validate the correctness of the cryptographic algorithms and workflows.
 
-Test Coverage:
+### Test Coverage:
 
-Vigenère encryption/decryption
+##### Vigenère encryption/decryption
 
-Vernam encryption/decryption
+##### Vernam encryption/decryption
 
-OTP encryption/decryption
+##### OTP encryption/decryption
 
-Input validation and error handling
+##### Input validation and error handling
 
-Database setup and message storage
+##### Database setup and message storage
 
 Execution:  
 Run all tests with:
