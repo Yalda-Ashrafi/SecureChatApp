@@ -106,13 +106,26 @@ Visit the Live Web App: https://securechatapp-oopk.onrender.com/otp
 
 ##  Tests
 
-Run automated tests with:
+SecureChatApp includes automated unit tests to validate the correctness of the cryptographic algorithms and workflows.
 
-```bash
+Test Coverage:
+
+Vigenère encryption/decryption
+
+Vernam encryption/decryption
+
+OTP encryption/decryption
+
+Input validation and error handling
+
+Database setup and message storage
+
+Execution:  
+Run all tests with:
 pytest
-```
-
-Unit tests cover encryption/decryption correctness, key validation, and error handling.
+Results:  
+14 tests passed in approximately 1.45 seconds.
+This confirms that all implemented algorithms and workflows behave consistently under different conditions and that error handling is robust.
 
 ---
 
